@@ -1,18 +1,15 @@
 package com.letkeman.backend.controller;
 
-import com.letkeman.backend.model.api.User;
+import com.letkeman.backend.model.api.ApplicationUser;
 import com.letkeman.backend.model.api.UserRequest;
 import com.letkeman.backend.service.AuthenticationService;
-import jakarta.ws.rs.Produces;
-import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
@@ -20,8 +17,15 @@ public class AuthenticationController {
     @PostMapping(
             value = "/letkeman/api/users",
             produces = "application/json")
-    public ResponseEntity<User> createUser(@RequestBody UserRequest requestBody){
-        User user = authenticationService.createUser(requestBody);
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<ApplicationUser> createUser(@RequestBody UserRequest requestBody){
+        ApplicationUser applicationUser = authenticationService.createUser(requestBody);
+        return ResponseEntity.ok().body(applicationUser);
+    }
+    @GetMapping(
+            value = "/letkeman/api/users/{id}",
+            produces = "application/json")
+    public ResponseEntity<ApplicationUser> getUser(@PathVariable Long id){
+        ApplicationUser applicationUser = authenticationService.getUser(id);
+        return ResponseEntity.ok().body(applicationUser);
     }
 }
